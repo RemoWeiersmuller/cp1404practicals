@@ -7,6 +7,7 @@ from random import randint
 
 
 def main():
+    """"get a score give back a grade"""
     score = float(input("Enter score: "))
     grade = determine_grade(score)
     print(grade)
