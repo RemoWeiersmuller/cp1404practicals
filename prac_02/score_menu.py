@@ -1,6 +1,6 @@
 """Score menu for practical 2"""
 
-from score import determine_grade # TODO how to import without immediatly running function?
+from score import determine_grade # TODO how to import without immediately running function?
 
 
 def main():
