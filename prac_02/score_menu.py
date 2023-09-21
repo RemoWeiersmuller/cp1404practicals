@@ -4,6 +4,7 @@ from score import determine_grade # TODO how to import without immediatly runnin
 
 
 def main():
+    score = None
     print("(G)et valid score\n(P)rint result\n(S)how stars\n(Q)uit")
     choice = input("choice: ").upper()
 
@@ -11,7 +12,7 @@ def main():
         if choice == 'G':
             score = get_valid_score()
         elif choice == 'P':
-            if score != '':
+            if score is not None:
                 grade = determine_grade(score)
                 print(grade)
             else:
@@ -19,7 +20,7 @@ def main():
                 grade = determine_grade(score)
                 print(grade)
         elif choice == 'S':
-            if score != '':
+            if score is not None:
                 print('*' * score)
             else:
                 score = get_valid_score()
