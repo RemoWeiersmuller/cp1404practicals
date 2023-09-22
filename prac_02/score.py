@@ -32,5 +32,6 @@ def determine_grade(score):
     return grade
 
 
+print(__name__)
 if __name__ == "__main__":
     main()
