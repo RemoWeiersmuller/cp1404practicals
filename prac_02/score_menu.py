@@ -43,5 +43,5 @@ def get_valid_score():
     return score
 
 
-if __name__ == "__main__":
-    main()
+#  if __name__ == "__main__":
+main()
