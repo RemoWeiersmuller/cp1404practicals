@@ -43,5 +43,4 @@ def get_valid_score():
     return score
 
 
-
 main()
