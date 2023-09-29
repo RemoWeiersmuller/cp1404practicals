@@ -8,6 +8,8 @@ def main():
     print(random_boolean1)
     random_boolean2 = bool(random.getrandbits(1))
     print(random_boolean2)
-    random_boolean3 = bool(random.randint(0,1))
+    random_boolean3 = bool(random.randint(0, 1))
     print(random_boolean3)
+
+
 main()
