@@ -20,10 +20,10 @@ while email != '':
         print('wrong')
         name = input('enter your name: ').title()
 
-    name_to_email[name] = email
+    name_to_email[email] = name
     email = input('enter your email: ')
 
 
 print('') # one space line between the list and the input.
-for name, email in name_to_email.items():
+for email, name in name_to_email.items():
     print(f"{name} ({email})")
