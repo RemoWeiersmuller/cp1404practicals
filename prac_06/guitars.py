@@ -2,11 +2,13 @@
 languages
 Estimate: 30 minutes
 Actual:   20 minutes
+Store guitars in a list, using Guitar class.
 """
 from prac_06.guitar import Guitar
 
 
 def main():
+    """Store guitars in a list, using Guitar class."""
     guitars = []
     print("My guitars!")
     name = input("Name: ")
