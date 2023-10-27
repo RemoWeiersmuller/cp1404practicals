@@ -1,4 +1,6 @@
 """Store details about a guitar in a class."""
+
+
 class Guitar:
     """Store details about a guitar in a class."""
     CURRENT_YEAR = 2023
