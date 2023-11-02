@@ -18,3 +18,6 @@ class Project:
 
     def __lt__(self, other):
         return self.priority < other.priority
+
+    def is_incomplete(self):
+        return self.completion_percentage < 100
