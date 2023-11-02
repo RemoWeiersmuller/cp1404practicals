@@ -18,28 +18,49 @@ MENU = ("(L)oad projects\n(S)ave projects\n(D)isplay projects\n(F)ilter projects
 
 def main():
     print(MENU)
-    choice = input('>>>').upper()
-    while choice != 'Q':
-        if choice == 'L':
+    menu_choice = input('>>>').upper()
+    while menu_choice != 'Q':
+        if menu_choice == 'L':
             projects = read_file()
-        elif choice == 'S':
+        elif menu_choice == 'S':
             save_projects(projects)
             print(f"project records have been saved to {FILENAME_OUTPUTFILE}")
-        elif choice == 'D':
+        elif menu_choice == 'D':
             complete_projects, incomplete_projects = create_sorted_lists(projects)
             display_projects(complete_projects, incomplete_projects)
-        elif choice == 'F':
+        elif menu_choice == 'F':
             print("filter")
-        elif choice == 'A':
+        elif menu_choice == 'A':
             print("Let's add a new project")
             add_project(projects)
             print(projects)
-        elif choice == 'U':
-            print("update")
+        elif menu_choice == 'U':
+            for i, project in enumerate(projects):
+                print(i, project)
+            new_percentage, new_priority, project_choice = get_new_object_values(projects)
+            update_object(new_percentage, new_priority, project_choice, projects)
+
+
+
         else:
-            print('Invalid menu choice')
+            print('Invalid menu menu_choice')
         print(MENU)
-        choice = input('>>>').upper()
+        menu_choice = input('>>>').upper()
+
+
+def update_object(new_percentage, new_priority, project_choice, projects):
+    if new_percentage != '':
+        projects[project_choice].completion_percentage = new_percentage
+    if new_priority != '':
+        projects[project_choice].priority = new_priority
+
+
+def get_new_object_values(projects):
+    project_choice = int(input("Project choice: "))
+    print(projects[project_choice])
+    new_percentage = input("New Percentage: ")
+    new_priority = input("New Priority: ")
+    return new_percentage, new_priority, project_choice
 
 
 def display_projects(complete_projects, incomplete_projects):
