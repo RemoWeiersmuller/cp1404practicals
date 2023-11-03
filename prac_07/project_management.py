@@ -1,7 +1,7 @@
 """
 languages
 Estimate: 90 minutes
-Actual:   45 + 90 + 120 +  minutes
+Actual:   45 + 90 + 120 + 120 + XX minutes
 
 
 Load project data from a file with options to display, add, update, filter and save projects.
@@ -27,8 +27,7 @@ def main():
         if menu_choice == 'L':
             projects = read_file()
         elif menu_choice == 'S':
-            filename_output = input("Enter name of the outputfile")
-            save_projects(projects, filename_output)
+            save_projects(projects)
             print(f"project records have been saved to {filename_output}")
         elif menu_choice == 'D':
             display_projects(projects)
@@ -43,16 +42,16 @@ def main():
             for i, project in enumerate(projects):
                 print(i, project)
             update_object(projects)
-
         else:
             print('Invalid menu menu_choice')
         print(MENU)
         menu_choice = input('>>>').upper()
 
-    filename_output = input("Enter name of the outputfile: ")
-    save_projects(projects, filename_output)
-    print(f"project records have been saved to {filename_output}")
-
+    save_choice = input("you want to save (y/n): ").upper()
+    if save_choice == 'Y':
+        filename_output = save_projects(projects)
+        print(f"project records have been saved to {filename_output}")
+    print("Thank you for using custom-built project management software.")
 
 def read_file():
     """Load the data from a given txt file."""
@@ -71,13 +70,15 @@ def read_file():
     return projects
 
 
-def save_projects(projects, filename_output):
+def save_projects(projects):
     """Save the projects in a txt file."""
+    filename_output = input("Enter name of the outputfile: ")
     with open(filename_output, "w", encoding="utf-8-sig") as out_file:
         print("Name	Start Date	Priority	Cost Estimate	Completion Percentage", file=out_file)
         for project in projects:
             print(f"{project.name} {project.start_date.strftime('%d/%m/%Y')} {project.priority} "
                   f"{project.cost_estimate} {project.completion_percentage}", file=out_file)
+    return filename_output
 
 
 def display_projects(projects):
