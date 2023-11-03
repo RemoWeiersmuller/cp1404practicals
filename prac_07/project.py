@@ -10,15 +10,17 @@ class Project:
         self.completion_percentage = completion_percentage
 
     def __str__(self):
-        # TODO look at the print with strftime.
-        return (f"{self.name}, start: {_.strftime(self.start_date)}, priority {self.priority}, "
-                f"estimate: ${self.cost_estimate}, completion: {self.completion_percentage}%")
+        return (f"{self.name}, start: {self.start_date.strftime('%d/%m/%Y')}, priority {self.priority}, "
+                f"estimate: ${self.cost_estimate:.2f}, completion: {self.completion_percentage}%")
 
     def __repr__(self):
         return str(self)
 
     def __lt__(self, other):
         return self.priority < other.priority
+
+    def __gt__(self, other):
+        return self.priority > other.priority
 
     def is_incomplete(self):
         return int(self.completion_percentage) < 100
