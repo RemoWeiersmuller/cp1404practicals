@@ -64,10 +64,9 @@ def read_file():
             date_string = line[(line.find('/') - 2):(line.find('/') + 8)].strip()
             start_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
             parts = line[(line.find('/') + 8):].strip().split('\t')
-            priority = parts[0]
+            priority = int(parts[0])
             cost = float(parts[1])
-            completion = parts[2]
-
+            completion = int(parts[2])
             projects.append(Project(name, start_date, priority, cost, completion))
     return projects
 
@@ -100,7 +99,7 @@ def filter_projects(projects):
     date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
     filter_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
     print(type(filter_date))
-    filtered_projects = [project for project in projects if project.start_date > filter_date]
+    filtered_projects = [project for project in projects if project.start_date >= filter_date]
     return filtered_projects
 
 
