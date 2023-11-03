@@ -1,7 +1,7 @@
 """
 languages
 Estimate: 90 minutes
-Actual:   45 + XX minutes
+Actual:   45 + 90 +xx minutes
 
 """
 
@@ -26,10 +26,23 @@ def main():
             save_projects(projects)
             print(f"project records have been saved to {FILENAME_OUTPUTFILE}")
         elif menu_choice == 'D':
-            complete_projects, incomplete_projects = create_sorted_lists(projects)
-            display_projects(complete_projects, incomplete_projects)
+            display_projects(projects)
         elif menu_choice == 'F':
             print("filter")
+            date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
+            filter_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+            print(type(filter_date))
+            for project in projects:
+                # if type(project.start_date) != datetime:
+                date_parts = project.start_date.split('/')
+                date = datetime.date(int(date_parts[2]), int(date_parts[1]), int(date_parts[0]))
+                project.start_date = date
+                print(type(date))
+            filtered_projects = [project for project in projects if project.start_date < filter_date]
+            for project in filtered_projects:
+                print(project)
+
+
         elif menu_choice == 'A':
             print("Let's add a new project")
             add_project(projects)
@@ -63,7 +76,12 @@ def get_new_object_values(projects):
     return new_percentage, new_priority, project_choice
 
 
-def display_projects(complete_projects, incomplete_projects):
+def display_projects(projects):
+    incomplete_projects = [project for project in projects if project.is_incomplete()]
+    incomplete_projects.sort(key=attrgetter("priority"))
+    complete_projects = [project for project in projects if not project.is_incomplete()]
+    complete_projects.sort(key=attrgetter("priority"))
+    return complete_projects, incomplete_projects
     print("Incomplete projects: ")
     for line in incomplete_projects:
         print(line)
@@ -72,34 +90,28 @@ def display_projects(complete_projects, incomplete_projects):
         print(line)
 
 
-def create_sorted_lists(projects):
-    incomplete_projects = [project for project in projects if project.is_incomplete()]
-    incomplete_projects.sort(key=attrgetter("priority"))
-    complete_projects = [project for project in projects if not project.is_incomplete()]
-    complete_projects.sort(key=attrgetter("priority"))
-    return complete_projects, incomplete_projects
 
 
 def add_project(projects):
     name = input("Name: ")
     date_string = input("Date (d/m/yyyy): ")  # e.g., "30/9/2022"
-    date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-    print(f"That day is/was {date.strftime('%A')}")
-    print(date.strftime("%d/%m/%Y"))
+    new_project_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+    print(f"That day is/was {new_project_date.strftime('%A')}")
+    print(new_project_date.strftime("%d/%m/%Y"))
     priority = int(input("Priority: "))
     cost = float(input("Cost estimate: $ "))
     percent_complete = int(input("Percent complete: "))
-    projects.append(Project(name, date, priority, cost, percent_complete))
+    projects.append(Project(name, new_project_date, priority, cost, percent_complete))
 
 
 def save_projects(projects):
     with open(FILENAME_OUTPUTFILE, "w", encoding="utf-8-sig") as out_file:
         print("Name	Start Date	Priority	Cost Estimate	Completion Percentage", file=out_file)
         for project in projects:
-            print(project.start_date)
+            # print(project.start_date)
             # date = datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date()
             # project_date = date.strftime("%d/%m/%Y"))
-            print(f"{project.name} {project.start_date} {project.priority} "
+            print(f"{project.name} {str(project.start_date).replace('-', '/')} {project.priority} "
                   f"{project.cost_estimate} {project.completion_percentage}", file=out_file)
 
 
