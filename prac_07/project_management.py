@@ -27,8 +27,8 @@ def main():
         if menu_choice == 'L':
             projects = read_file()
         elif menu_choice == 'S':
-            save_projects(projects)
-            print(f"project records have been saved to {filename_output}")
+            outputfile_name = save_projects(projects)
+            print(f"project records have been saved to {outputfile_name}")
         elif menu_choice == 'D':
             display_projects(projects)
         elif menu_choice == 'F':
@@ -49,9 +49,10 @@ def main():
 
     save_choice = input("you want to save (y/n): ").upper()
     if save_choice == 'Y':
-        filename_output = save_projects(projects)
-        print(f"project records have been saved to {filename_output}")
+        outputfile_name = save_projects(projects)
+        print(f"project records have been saved to {outputfile_name}")
     print("Thank you for using custom-built project management software.")
+
 
 def read_file():
     """Load the data from a given txt file."""
@@ -72,13 +73,13 @@ def read_file():
 
 def save_projects(projects):
     """Save the projects in a txt file."""
-    filename_output = input("Enter name of the outputfile: ")
-    with open(filename_output, "w", encoding="utf-8-sig") as out_file:
+    outputfile_name = input("Enter name of the outputfile: ")
+    with open(outputfile_name, "w", encoding="utf-8-sig") as out_file:
         print("Name	Start Date	Priority	Cost Estimate	Completion Percentage", file=out_file)
         for project in projects:
             print(f"{project.name} {project.start_date.strftime('%d/%m/%Y')} {project.priority} "
                   f"{project.cost_estimate} {project.completion_percentage}", file=out_file)
-    return filename_output
+    return outputfile_name
 
 
 def display_projects(projects):
@@ -97,9 +98,15 @@ def display_projects(projects):
 
 def filter_projects(projects):
     """Filter the list of project by a entered date."""
+    is_finished = False
     date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
-    filter_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-    print(type(filter_date))
+    while not is_finished:
+        try:
+            filter_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+            is_finished = True
+        except ValueError:
+            print("invalid date")
+            date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
     filtered_projects = [project for project in projects if project.start_date >= filter_date]
     return filtered_projects
 
