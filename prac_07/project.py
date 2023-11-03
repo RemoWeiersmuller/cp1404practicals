@@ -24,5 +24,8 @@ class Project:
     def __gt__(self, other):
         return self.priority > other.priority
 
+    def __eq__(self, other):
+        return self.priority == other.priority
+
     def is_incomplete(self):
         return int(self.completion_percentage) < 100
