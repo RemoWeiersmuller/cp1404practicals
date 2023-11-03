@@ -17,6 +17,7 @@ MENU = ("(L)oad projects\n(S)ave projects\n(D)isplay projects\n(F)ilter projects
 
 
 def main():
+    projects = read_file()
     print(MENU)
     menu_choice = input('>>>').upper()
     while menu_choice != 'Q':
@@ -32,12 +33,12 @@ def main():
             date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
             filter_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
             print(type(filter_date))
-            for project in projects:
-                # if type(project.start_date) != datetime:
-                date_parts = project.start_date.split('/')
-                date = datetime.date(int(date_parts[2]), int(date_parts[1]), int(date_parts[0]))
-                project.start_date = date
-                print(type(date))
+            # for project in projects:
+            #     # if type(project.start_date) != datetime:
+            #     date_parts = project.start_date.split('/')
+            #     date = datetime.date(int(date_parts[2]), int(date_parts[1]), int(date_parts[0]))
+            #     project.start_date = date
+            #     print(type(date))
             filtered_projects = [project for project in projects if project.start_date < filter_date]
             for project in filtered_projects:
                 print(project)
@@ -60,6 +61,9 @@ def main():
         print(MENU)
         menu_choice = input('>>>').upper()
 
+    save_projects(projects)
+    print(f"project records have been saved to {FILENAME_OUTPUTFILE}")
+
 
 def update_object(new_percentage, new_priority, project_choice, projects):
     if new_percentage != '':
@@ -81,15 +85,12 @@ def display_projects(projects):
     incomplete_projects.sort(key=attrgetter("priority"))
     complete_projects = [project for project in projects if not project.is_incomplete()]
     complete_projects.sort(key=attrgetter("priority"))
-    return complete_projects, incomplete_projects
     print("Incomplete projects: ")
     for line in incomplete_projects:
         print(line)
     print("Complete projects: ")
     for line in complete_projects:
         print(line)
-
-
 
 
 def add_project(projects):
@@ -122,7 +123,8 @@ def read_file():
     projects = []
     for line in in_file:
         name = line[:(line.find('/') - 2)].strip()
-        start_date = line[(line.find('/') - 2):(line.find('/') + 8)].strip()
+        date_string = line[(line.find('/') - 2):(line.find('/') + 8)].strip()
+        start_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
         parts = line[(line.find('/') + 8):].strip().split('\t')
         priority = parts[0]
         cost = parts[1]
