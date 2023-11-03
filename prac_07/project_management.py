@@ -18,7 +18,8 @@ MENU = ("(L)oad projects\n(S)ave projects\n(D)isplay projects\n(F)ilter projects
 
 
 def main():
-    """Load project data from a file with options to display, add, update, filter and save projects."""
+    """Load project data from a file with
+    options to display, add, update, filter and save projects."""
     projects = read_file()
     print(MENU)
     menu_choice = input('>>>').upper()
@@ -55,20 +56,19 @@ def main():
 
 def read_file():
     """Load the data from a given txt file."""
-    in_file = open(FILENAME, 'r', encoding="utf-8-sig")
-    in_file.readline()  # skip the first line
-    projects = []
-    for line in in_file:
-        name = line[:(line.find('/') - 2)].strip()
-        date_string = line[(line.find('/') - 2):(line.find('/') + 8)].strip()
-        start_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-        parts = line[(line.find('/') + 8):].strip().split('\t')
-        priority = parts[0]
-        cost = float(parts[1])
-        completion = parts[2]
+    with open(FILENAME, 'r', encoding="utf-8-sig") as in_file:
+        in_file.readline()  # skip the first line
+        projects = []
+        for line in in_file:
+            name = line[:(line.find('/') - 2)].strip()
+            date_string = line[(line.find('/') - 2):(line.find('/') + 8)].strip()
+            start_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+            parts = line[(line.find('/') + 8):].strip().split('\t')
+            priority = parts[0]
+            cost = float(parts[1])
+            completion = parts[2]
 
-        projects.append(Project(name, start_date, priority, cost, completion))
-    in_file.close()
+            projects.append(Project(name, start_date, priority, cost, completion))
     return projects
 
 
