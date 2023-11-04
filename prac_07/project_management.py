@@ -73,7 +73,7 @@ def read_file():
 
 def save_projects(projects):
     """Save the projects in a txt file."""
-    outputfile_name = input("Enter name of the outputfile: ")
+    outputfile_name = get_valid_input("Enter name of the outputfile: ")
     with open(outputfile_name, "w", encoding="utf-8-sig") as out_file:
         print("Name	Start Date	Priority	Cost Estimate	Completion Percentage", file=out_file)
         for project in projects:
@@ -113,10 +113,11 @@ def filter_projects(projects):
 
 def update_object(projects):
     """Update the values of a project with the given user inputs."""
-    project_choice = int(input("Project choice: "))
+    # project_choice = int(input("Project choice: "))
+    project_choice = get_valid_number_greater_zero("Project choice: ", int)
     print(projects[project_choice])
-    new_percentage = input("New Percentage: ")
-    new_priority = input("New Priority: ")
+    new_percentage = get_valid_number_greater_zero("New Percentage: ", float)
+    new_priority = get_valid_number_greater_zero("New Priority: ", int) # TODO how to leave them empty?
     if new_percentage != '':
         projects[project_choice].completion_percentage = float(new_percentage)
     if new_priority != '':
@@ -125,13 +126,32 @@ def update_object(projects):
 
 def add_project(projects):
     """Add a new project to the list of projects."""
-    name = input("Name: ")
+    name = get_valid_input("Name: ")
     date_string = input("Date (d/m/yyyy): ")  # e.g., "30/9/2022"
     new_project_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
     priority = int(input("Priority: "))
     cost = float(input("Cost estimate: $ "))
     percent_complete = int(input("Percent complete: "))
     projects.append(Project(name, new_project_date, priority, cost, percent_complete))
+
+
+def get_valid_number_greater_zero(prompt, datatype):
+    is_finished = False
+    while not is_finished:
+        try:
+            number = datatype(input(prompt))
+            is_finished = True
+        except ValueError:
+            print("Enter a valid number")
+    return number
+
+def get_valid_input(prompt):
+    """Get a valid input from the user."""
+    value = input(prompt)
+    while value == '':
+        print('Input can not be blank.')
+        value = input(prompt)
+    return value
 
 
 main()
