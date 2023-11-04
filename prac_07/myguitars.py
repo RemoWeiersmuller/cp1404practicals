@@ -27,7 +27,7 @@ def main():
 
 def read_csv():
     """Language file reader version using the csv module."""
-    in_file = open(FILENAME, 'r', newline='')
+    in_file = open(FILENAME, 'r', encoding="utf-8-sig", newline='\n')
     reader = csv.reader(in_file)  # use default dialect, Excel
     lines = []
     for row in reader:
