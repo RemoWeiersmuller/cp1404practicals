@@ -1,4 +1,7 @@
-"""Read, display guitars from a csv and adds new guitars from user input and saves it back to the csv."""
+"""
+Estimate: 40 minutes
+Actual:   52 minutes
+Read, display guitars from a csv and adds new guitars from user input and saves it back to the csv."""
 
 import csv
 
