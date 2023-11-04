@@ -1,16 +1,16 @@
 """
 languages
 Estimate: 90 minutes
-Actual:   45 + 90 + 120 + 120 + XX minutes
+Actual:   45 + 90 + 120 + 120 = 375 minutes
 
 
 Load project data from a file with options to display, add, update, filter and save projects.
 """
 
 import datetime
-
-from prac_07.project import Project
 from operator import attrgetter
+from project import Project
+
 
 FILENAME = "projects.txt"
 MENU = ("(L)oad projects\n(S)ave projects\n(D)isplay projects\n(F)ilter projects by date\n"
@@ -98,6 +98,13 @@ def display_projects(projects):
 
 def filter_projects(projects):
     """Filter the list of project by a entered date."""
+    filter_date = get_valid_date()
+    filtered_projects = [project for project in projects if project.start_date >= filter_date]
+    return filtered_projects
+
+
+def get_valid_date():
+    """Get a valid date from the user and store it as a datetime object."""
     is_finished = False
     date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
     while not is_finished:
@@ -106,18 +113,18 @@ def filter_projects(projects):
             is_finished = True
         except ValueError:
             print("invalid date")
-            date_string = input("Show projects that start after date (dd/mm/yy):")  # e.g., "30/9/2022"
-    filtered_projects = [project for project in projects if project.start_date >= filter_date]
-    return filtered_projects
+            date_string = input("Show projects that start after date (dd/mm/yy):")
+    return filter_date
 
 
 def update_object(projects):
     """Update the values of a project with the given user inputs."""
     # project_choice = int(input("Project choice: "))
-    project_choice = get_valid_number_or_empty_string("Project choice: ", int, (len(projects) - 1), True)
+    project_choice = get_valid_number_or_empty_string("Project choice: ",
+                                                      int, (len(projects) - 1), True)
     print(projects[project_choice])
-    new_percentage = get_valid_number_or_empty_string("New Percentage: ", float, 100, False)
-    new_priority = get_valid_number_or_empty_string("New Priority: ", int, 100, False)
+    new_percentage = get_valid_number_or_empty_string("New Percentage: ", float)
+    new_priority = get_valid_number_or_empty_string("New Priority: ", int)
     if new_percentage != '':
         projects[project_choice].completion_percentage = new_percentage
     if new_priority != '':
@@ -125,6 +132,7 @@ def update_object(projects):
 
 
 def get_valid_number_or_empty_string(prompt, datatype, max_value=100, is_empty_inadmissible=False):
+    """Get a valid number or an empty string from the User and checks the datatype. """
     is_finished = False
     while not is_finished:
         try:
@@ -144,11 +152,10 @@ def get_valid_number_or_empty_string(prompt, datatype, max_value=100, is_empty_i
 def add_project(projects):
     """Add a new project to the list of projects."""
     name = get_valid_input("Name: ")
-    date_string = input("Date (d/m/yyyy): ")  # e.g., "30/9/2022"
-    new_project_date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-    priority = int(input("Priority: "))
-    cost = float(input("Cost estimate: $ "))
-    percent_complete = int(input("Percent complete: "))
+    new_project_date = get_valid_date()
+    priority = get_valid_number_or_empty_string("Priority: ", int)
+    cost = get_valid_number_or_empty_string("Cost estimate: $ ", float, float('inf'))
+    percent_complete = get_valid_number_or_empty_string("Percent complete: ", int)
     projects.append(Project(name, new_project_date, priority, cost, percent_complete))
 
 
