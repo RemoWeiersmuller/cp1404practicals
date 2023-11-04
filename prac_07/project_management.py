@@ -114,14 +114,31 @@ def filter_projects(projects):
 def update_object(projects):
     """Update the values of a project with the given user inputs."""
     # project_choice = int(input("Project choice: "))
-    project_choice = get_valid_number_greater_zero("Project choice: ", int)
+    project_choice = get_valid_number_or_empty_string("Project choice: ", int, (len(projects) - 1), True)
     print(projects[project_choice])
-    new_percentage = get_valid_number_greater_zero("New Percentage: ", float)
-    new_priority = get_valid_number_greater_zero("New Priority: ", int) # TODO how to leave them empty?
+    new_percentage = get_valid_number_or_empty_string("New Percentage: ", float, 100, False)
+    new_priority = get_valid_number_or_empty_string("New Priority: ", int, 100, False)
     if new_percentage != '':
-        projects[project_choice].completion_percentage = float(new_percentage)
+        projects[project_choice].completion_percentage = new_percentage
     if new_priority != '':
-        projects[project_choice].priority = int(new_priority)
+        projects[project_choice].priority = new_priority
+
+
+def get_valid_number_or_empty_string(prompt, datatype, max_value=100, is_empty_inadmissible=False):
+    is_finished = False
+    while not is_finished:
+        try:
+            number = input(prompt)
+            if number != '' or is_empty_inadmissible:
+                number = datatype(number)
+                assert number >= 0
+                assert number <= max_value
+            is_finished = True
+        except ValueError:
+            print("Enter a valid number")
+        except AssertionError:
+            print(f"Number is not in the given range, has to be <= {max_value}")
+    return number
 
 
 def add_project(projects):
@@ -134,16 +151,6 @@ def add_project(projects):
     percent_complete = int(input("Percent complete: "))
     projects.append(Project(name, new_project_date, priority, cost, percent_complete))
 
-
-def get_valid_number_greater_zero(prompt, datatype):
-    is_finished = False
-    while not is_finished:
-        try:
-            number = datatype(input(prompt))
-            is_finished = True
-        except ValueError:
-            print("Enter a valid number")
-    return number
 
 def get_valid_input(prompt):
     """Get a valid input from the user."""
