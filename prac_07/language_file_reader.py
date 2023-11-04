@@ -43,7 +43,7 @@ def main():
 main()
 
 
-def using_csv():
+def read_file_with_csv():
     """Language file reader version using the csv module."""
     # First, open the file for reading - note: specify newline
     # to avoid quoted \n in strings being considered a new record
@@ -58,7 +58,7 @@ def using_csv():
 # using_csv()
 
 
-def using_namedtuple():
+def read_file_with_namedtuple():
     """Language file reader version using a named tuple."""
     in_file = open('languages.csv', 'r', newline='')
     file_field_names = in_file.readline().strip().split(',')
@@ -77,7 +77,7 @@ def using_namedtuple():
 # using_namedtuple()
 
 
-def using_csv_namedtuple():
+def read_file_with_csv_and_namedtuple():
     """Language file reader version using both csv module and named tuple."""
     Language = namedtuple('Language', 'name, typing, reflection, year')
     in_file = open("languages.csv", "r")
