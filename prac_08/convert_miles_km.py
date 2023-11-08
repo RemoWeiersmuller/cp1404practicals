@@ -7,6 +7,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 
+FACTOR_MILES_TO_KM = 1.60934
 
 class ConvertMilesKm(App):
     """Build a class with the given view from a kv file."""
@@ -19,20 +20,27 @@ class ConvertMilesKm(App):
         self.title = "Convert Miles to KM"
         self.root = Builder.load_file('convert_miles_km.kv')
         self.result = "Result"
-        self.user_value = '0'
+        self.user_value = ''
         return self.root
 
     def handle_update(self):
         """Handle changes to the text input by updating the model from the view."""
-        self.result = self.convert_miles_to_km()
+        try:
+            self.result = self.convert_miles_to_km()
+        except ValueError:
+            self.user_value = '0.0'
 
     def convert_miles_to_km(self):
-        result_in_km = str(float(self.root.ids.user_input.text) * 1.60934)
+        result_in_km = str(float(self.root.ids.user_input.text) * FACTOR_MILES_TO_KM)
         return result_in_km
 
     def handle_increment(self, increment):
-        self.user_value = str(float(self.user_value) + increment)
-        self.handle_update()
+        try:
+            self.user_value = str(float(self.root.ids.user_input.text) + increment)
+            self.handle_update()
+        except ValueError:
+            self.user_value = str(increment)
+            self.handle_update()
 
 
 ConvertMilesKm().run()
