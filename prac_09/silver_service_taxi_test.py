@@ -10,8 +10,7 @@ def main():
     limo_silver_service_taxi = SilverServiceTaxi(name='Limo', fuel=200, fanciness=2)
     limo_silver_service_taxi.start_fare()
     limo_silver_service_taxi.drive(18)
-    fare = limo_silver_service_taxi.get_fare()
-    print(fare)
+    print(limo_silver_service_taxi.get_fare())
 
 
 main()
