@@ -51,10 +51,11 @@ def run_tests():
     assert test_car.fuel == 10, "Car does not set fuel correctly"
 
 
-
 # TODO: 3. Uncomment the following line and run the doctests
 # (PyCharm may see your >>> doctest comments and run doctests anyway.)
 doctest.testmod()
+
+
 # What happened?
 
 # TODO: 4. Fix the failing is_long_word function
@@ -85,6 +86,7 @@ def format_phrase_to_sentence(phrase):
     if sentence[-1] != '.':
         sentence += '.'
     return sentence
+
 
 run_tests()
 
