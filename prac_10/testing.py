@@ -56,8 +56,6 @@ def run_tests():
 doctest.testmod()
 
 
-# What happened?
-
 # TODO: 4. Fix the failing is_long_word function
 # (don't change the tests, change the function!)
 # return len(word) >= length
